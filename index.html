@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Game Nickname</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      padding: 24px; color: #f5f7ff; font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #263c68 0, #111a31 45%, #090e1c 100%);
+    }
+    .panel {
+      width: min(100%, 440px); padding: 34px; border: 1px solid #52658b;
+      border-radius: 18px; background: rgba(15, 25, 47, .94);
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+    .eyebrow { color: #8fb8ff; font-size: 12px; letter-spacing: 2px; font-weight: 700; }
+    h1 { margin: 12px 0 8px; font-size: 28px; }
+    p { color: #b9c5dc; line-height: 1.5; }
+    label { display: block; margin: 24px 0 9px; font-weight: 700; }
+    input {
+      width: 100%; padding: 15px 14px; border: 1px solid #52658b;
+      border-radius: 10px; background: #0a1327; color: white; font-size: 17px;
+      outline: none;
+    }
+    input:focus { border-color: #70a7ff; box-shadow: 0 0 0 3px rgba(112,167,255,.16); }
+    .rules { margin: 10px 0 0; font-size: 13px; }
+    .message { min-height: 20px; margin: 12px 0 4px; font-size: 13px; }
+    .message.error { color: #ff9292; }
+    .message.success { color: #8be0ae; }
+    button {
+      width: 100%; margin-top: 14px; padding: 15px; border: 0; border-radius: 10px;
+      background: #397df5; color: white; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background .15s, transform .15s;
+    }
+    button:hover { background: #5590ff; }
+    button:active { transform: scale(.99); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <div class="eyebrow">SUPER CITY RP</div>
+    <h1>Choose your nickname</h1>
+    <p>Enter the game nickname you want to use, then press Apply to continue.</p>
+
+    <form id="nicknameForm" novalidate>
+      <label for="nickname">Game nickname</label>
+      <input id="nickname" name="nickname" type="text"
+             placeholder="Enter a nickname" maxlength="21"
+             autocomplete="off" spellcheck="false" aria-describedby="rules message">
+      <p class="rules" id="rules">Rules: 2–21 characters. Use only letters A–Z, numbers 0–9, and the minus sign (-).</p>
+      <div class="message" id="message" role="status" aria-live="polite"></div>
+      <button id="applyButton" type="submit">Apply</button>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('nicknameForm');
+    const input = document.getElementById('nickname');
+    const message = document.getElementById('message');
+    const applyButton = document.getElementById('applyButton');
+    const destination = 'https://brickblok.ifree.page/';
+
+    function validateNickname(value) {
+      return value.length >= 2 &&
+             value.length <= 21 &&
+             /^[A-Za-z0-9-]+$/.test(value);
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const nickname = input.value.trim();
+
+      if (!validateNickname(nickname)) {
+        message.textContent = 'Invalid nickname. Use 2–21 characters: letters A–Z, numbers, or - only.';
+        message.className = 'message error';
+        input.focus();
+        return;
+      }
+
+      message.textContent = 'Nickname accepted. Redirecting...';
+      message.className = 'message success';
+      applyButton.disabled = true;
+      window.location.href = destination;
+    });
+  </script>
+</body>
+</html>
